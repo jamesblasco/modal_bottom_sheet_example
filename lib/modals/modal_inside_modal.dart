@@ -27,7 +27,7 @@ class ModalInsideModal extends StatelessWidget {
                     title: Text('Item $index'),
                     onTap: () => showCupertinoModalBottomSheet(
                           expand: true,
-                          isDismissible: false,
+                          barrierDismissible: false,
                           context: context,
                           backgroundColor: Colors.transparent,
                           builder: (context) =>

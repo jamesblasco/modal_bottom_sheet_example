@@ -93,7 +93,8 @@ Future<T> showAvatarModalBottomSheet<T>({
   final result = await Navigator.of(context, rootNavigator: useRootNavigator)
       .push(ModalBottomSheetRoute<T>(
     builder: builder,
-    containerBuilder: (_, animation, child) => AvatarBottomSheet(
+    sheetBuilder
+    : (_, animation, child) => AvatarBottomSheet(
       child: child,
       animation: animation,
     ),

@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
         }
         return MaterialPageRoute(
             builder: (context) => Scaffold(
-                  body: CupertinoScaffold(
-                    body: Builder(
+                  body:  Builder(
                       builder: (context) => CupertinoPageScaffold(
                         backgroundColor: Colors.white,
                         navigationBar: CupertinoNavigationBar(
@@ -41,8 +40,7 @@ class MyApp extends StatelessWidget {
                           middle: Text('Normal Navigation Presentation'),
                           trailing: GestureDetector(
                               child: Icon(Icons.arrow_upward),
-                              onTap: () => CupertinoScaffold
-                                      .showCupertinoModalBottomSheet(
+                              onTap: () => showCupertinoModalBottomSheet(
                                     expand: true,
                                     context: context,
                                     backgroundColor: Colors.transparent,
@@ -70,7 +68,7 @@ class MyApp extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                
             settings: settings);
       },
       debugShowCheckedModeBanner: false,
