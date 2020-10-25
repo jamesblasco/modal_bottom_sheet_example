@@ -1,10 +1,8 @@
 import 'dart:ui';
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet_example/examples/sliver_container.dart';
-
+import 'package:modal_bottom_sheet_example/examples/cupertino_share/sliver_container.dart';
 class CupertinoSharePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,11 +47,13 @@ class CupertinoSharePage extends StatelessWidget {
               size: 28,
             ),
             onPressed: () {
-              showCupertinoModalBottomSheet(
-                expand: true,
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) => PhotoShareBottomSheet(),
+              Navigator.of(context).push(
+                CupertinoSheetRoute(
+                  expanded: true,
+                  isDismissible: false,
+                  transitionBackgroundColor: Colors.transparent,
+                  builder: (context) => PhotoShareBottomSheet(),
+                ),
               );
             },
           ),
@@ -88,7 +88,7 @@ class PhotoShareBottomSheet extends StatelessWidget {
               appBar: appBar(context),
               body: CustomScrollView(
                 physics: ClampingScrollPhysics(),
-                controller: ModalScrollController.of(context),
+                controller: SheetController.of(context).scrollController,
                 slivers: <Widget>[
                   SliverSafeArea(
                     bottom: false,

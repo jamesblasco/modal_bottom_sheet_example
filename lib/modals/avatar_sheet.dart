@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AvatarBottomSheet extends StatelessWidget {
+class _AvatarSheet extends StatelessWidget {
   final Widget child;
   final Animation<double> animation;
 
-  const AvatarBottomSheet({Key key, this.child, this.animation})
-      : super(key: key);
+  const _AvatarSheet({Key key, this.child, this.animation}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,46 +65,34 @@ class AvatarBottomSheet extends StatelessWidget {
   }
 }
 
-Future<T> showAvatarModalBottomSheet<T>({
-  @required BuildContext context,
-  @required WidgetBuilder builder,
-  Color backgroundColor,
-  double elevation,
-  ShapeBorder shape,
-  Clip clipBehavior,
-  Color barrierColor = Colors.black87,
-  bool bounce = true,
-  bool expand = false,
-  AnimationController secondAnimation,
-  bool useRootNavigator = false,
-  bool isDismissible = true,
-  bool enableDrag = true,
-  Duration duration,
-}) async {
-  assert(context != null);
-  assert(builder != null);
-  assert(expand != null);
-  assert(useRootNavigator != null);
-  assert(isDismissible != null);
-  assert(enableDrag != null);
-  assert(debugCheckHasMediaQuery(context));
-  assert(debugCheckHasMaterialLocalizations(context));
-  final result = await Navigator.of(context, rootNavigator: useRootNavigator)
-      .push(ModalBottomSheetRoute<T>(
-    builder: builder,
-    sheetBuilder
-    : (_, animation, child) => AvatarBottomSheet(
-      child: child,
-      animation: animation,
-    ),
-    bounce: bounce,
-    secondAnimationController: secondAnimation,
-    expanded: expand,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    isDismissible: isDismissible,
-    modalBarrierColor: barrierColor,
-    enableDrag: enableDrag,
-    duration: duration,
-  ));
-  return result;
+class AvatarSheetRoute extends SheetRoute {
+  AvatarSheetRoute({
+    @required WidgetBuilder builder,
+    Color backgroundColor,
+    double elevation,
+    ShapeBorder shape,
+    Clip clipBehavior,
+    Color barrierColor = Colors.black87,
+    bool bounce = true,
+    bool expand = false,
+    AnimationController secondAnimation,
+    bool useRootNavigator = false,
+    bool isDismissible = true,
+    bool enableDrag = true,
+    Duration duration,
+  }) : super(
+          builder: (context) {
+            return _AvatarSheet(
+              child: Builder(builder: builder),
+              animation: SheetController.of(context).animationController,
+            );
+          },
+          bounce: bounce,
+          secondAnimationController: secondAnimation,
+          expanded: expand,
+          isDismissible: isDismissible,
+          modalBarrierColor: barrierColor,
+          enableDrag: enableDrag,
+          duration: duration,
+        );
 }

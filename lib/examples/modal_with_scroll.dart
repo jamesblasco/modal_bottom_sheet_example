@@ -14,7 +14,7 @@ class ModalWithScroll extends StatelessWidget {
           bottom: false,
           child: ListView(
             shrinkWrap: true,
-            controller: ModalScrollController.of(context),
+            controller: SheetController.of(context).scrollController,
             children: ListTile.divideTiles(
               context: context,
               tiles: List.generate(

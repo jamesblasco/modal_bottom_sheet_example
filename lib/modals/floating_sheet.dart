@@ -11,31 +11,27 @@ class FloatingModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Material(
+      minimum: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child:  Material(
           color: backgroundColor,
           clipBehavior: Clip.antiAlias,
           borderRadius: BorderRadius.circular(12),
           child: child,
-        ),
+        
       ),
     );
   }
 }
 
-Future<T> showFloatingModalBottomSheet<T>({
-  @required BuildContext context,
-  @required WidgetBuilder builder,
-  Color backgroundColor,
-}) async {
-  final result = await showCustomModalBottomSheet(
-      context: context,
-      builder: builder,
-      sheetBuilder: (_, animation, child) => FloatingModal(
-            child: child,
+class FloatingSheetRoute extends SheetRoute {
+  FloatingSheetRoute({
+    @required WidgetBuilder builder,
+  }) : super(
+          builder: (context) => FloatingModal(
+            child: Builder(
+              builder: builder,
+            ),
           ),
-      expand: false);
-
-  return result;
+          expanded: false,
+        );
 }

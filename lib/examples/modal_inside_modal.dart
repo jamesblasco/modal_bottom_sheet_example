@@ -17,22 +17,23 @@ class ModalInsideModal extends StatelessWidget {
         child: ListView(
           reverse: reverse,
           shrinkWrap: true,
-          controller: ModalScrollController.of(context),
+          controller: SheetController.of(context).scrollController,
           physics: ClampingScrollPhysics(),
           children: ListTile.divideTiles(
               context: context,
               tiles: List.generate(
                 100,
                 (index) => ListTile(
-                    title: Text('Item $index'),
-                    onTap: () => showCupertinoModalBottomSheet(
-                          expand: true,
-                          barrierDismissible: false,
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) =>
-                              ModalInsideModal(reverse: reverse),
-                        )),
+                  title: Text('Item $index'),
+                  onTap: () => Navigator.of(context).push(
+                    CupertinoSheetRoute(
+                      expanded: true,
+                      isDismissible: false,
+                      transitionBackgroundColor: Colors.transparent,
+                      builder: (context) => ModalInsideModal(reverse: reverse),
+                    ),
+                  ),
+                ),
               )).toList(),
         ),
       ),
