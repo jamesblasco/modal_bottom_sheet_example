@@ -16,7 +16,8 @@ class ModalWithPageView extends StatelessWidget {
                 2,
                 (index) => ListView(
                       shrinkWrap: true,
-                      controller: SheetController.of(context).scrollController,
+                      controller:
+                          DefaultSheetController.of(context).scrollController,
                       children: ListTile.divideTiles(
                         context: context,
                         tiles: List.generate(

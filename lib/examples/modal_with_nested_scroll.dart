@@ -21,7 +21,7 @@ class NestedScrollModal extends StatelessWidget {
         ];
       },
       body: ListView.builder(
-        controller: SheetController.of(context).scrollController,
+        controller: DefaultSheetController.of(context).scrollController,
         itemBuilder: (context, index) {
           return Container(
             height: 100,

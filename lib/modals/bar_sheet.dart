@@ -69,18 +69,14 @@ class BarBottomSheet extends StatelessWidget {
 
 class BarSheetRoute extends SheetRoute {
 
-
   BarSheetRoute({
     @required WidgetBuilder builder,
     Color backgroundColor,
     double elevation,
     ShapeBorder shape,
-    double closeProgressThreshold,
     Clip clipBehavior,
     Color barrierColor = Colors.black87,
-    bool bounce = true,
     bool expand = false,
-    AnimationController secondAnimation,
     Curve animationCurve,
     bool useRootNavigator = false,
     bool isDismissible = true,
@@ -97,14 +93,12 @@ class BarSheetRoute extends SheetRoute {
             shape: shape,
             elevation: elevation,
           ),
-          bounce: bounce,
-          closeProgressThreshold: closeProgressThreshold,
-          secondAnimationController: secondAnimation,
           expanded: expand,
-          isDismissible: isDismissible,
-          modalBarrierColor: barrierColor,
-          enableDrag: enableDrag,
+          barrierDismissible: isDismissible,
+          barrierColor: barrierColor,
+          draggable: enableDrag,
           animationCurve: animationCurve,
           duration: duration,
         );
+        
 }

@@ -73,9 +73,7 @@ class AvatarSheetRoute extends SheetRoute {
     ShapeBorder shape,
     Clip clipBehavior,
     Color barrierColor = Colors.black87,
-    bool bounce = true,
     bool expand = false,
-    AnimationController secondAnimation,
     bool useRootNavigator = false,
     bool isDismissible = true,
     bool enableDrag = true,
@@ -84,15 +82,13 @@ class AvatarSheetRoute extends SheetRoute {
           builder: (context) {
             return _AvatarSheet(
               child: Builder(builder: builder),
-              animation: SheetController.of(context).animationController,
+              animation: DefaultSheetController.of(context).animation,
             );
           },
-          bounce: bounce,
-          secondAnimationController: secondAnimation,
           expanded: expand,
-          isDismissible: isDismissible,
-          modalBarrierColor: barrierColor,
-          enableDrag: enableDrag,
+          barrierDismissible: isDismissible,
+          barrierColor: barrierColor,
+          draggable: enableDrag,
           duration: duration,
         );
 }

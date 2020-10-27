@@ -17,7 +17,8 @@ class ModalWithNavigator extends StatelessWidget {
                 bottom: false,
                 child: ListView(
                   shrinkWrap: true,
-                  controller: SheetController.of(context).scrollController,
+                  controller:
+                      DefaultSheetController.of(context).scrollController,
                   children: ListTile.divideTiles(
                     context: context,
                     tiles: List.generate(

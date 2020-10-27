@@ -2,7 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet_example/examples/cupertino_share/cupertino_share.dart';
 import 'package:modal_bottom_sheet_example/modals/avatar_sheet.dart';
+import 'package:modal_bottom_sheet_example/snap_sheet_example.dart';
 
+import 'draggable_sheet.dart';
+import 'examples/complex_snap_sheet.dart';
+import 'examples/navigator_v2/navigator_v2.dart';
+import 'examples/snap_sheet.dart';
 import 'modals/bar_sheet.dart';
 import 'modals/floating_sheet.dart';
 import 'examples/modal_complex_all.dart';
@@ -13,6 +18,7 @@ import 'examples/modal_with_navigator.dart';
 import 'examples/modal_with_nested_scroll.dart';
 import 'examples/modal_with_scroll.dart';
 import 'examples/modal_with_page_view.dart';
+import 'modals/material_sheet.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,6 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(platform: TargetPlatform.iOS),
       title: 'BottomSheet Modals',
+      //home: ListViewSnapSheetExample(),
+      //  home: DraggablePage(),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
     );
@@ -54,10 +62,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                        title: Text('Cupertino Photo Share Example'),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => CupertinoSharePage()))),
+                      title: Text('Cupertino Photo Share Example'),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CupertinoSharePage(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Book App - Navigator 2.0'),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BooksApp(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('SnapSheet without route'),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SnapSheetPageExample(),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Advanced SnapSheet without route '),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AdvancedSnapSheetPageExample(),
+                        ),
+                      ),
+                    ),
                     SectionTitle('STYLES'),
                     ListTile(
                       title: Text('Material fit'),
@@ -98,11 +133,47 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                     ListTile(
-                      title: Text('Cupertino Modal fit'),
+                      title: Text('Cupertino Modal'),
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoSheetRoute(
-                            expanded: false,
+                            builder: (context) => ModalFit(),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Cupertino Sheet with stops'),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoSheetRoute(
+                            initialStop: 0.5,
+                            stops: [0, 0.5, 1],
+                            builder: (context) => ModalFit(),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Cupertino Scrollable Sheet with stops'),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoSheetRoute(
+                            initialStop: 0.5,
+                            stops: [0, 0.5, 1],
+                            builder: (context) => ModalInsideModal(),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Material Sheet with stops'),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialSheetRoute(
+                            expand: true,
+                            initialStop: 0.5,
+                            stops: [0, 0.5, 1],
                             builder: (context) => ModalFit(),
                           ),
                         );
@@ -114,7 +185,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () {
                         Navigator.of(context).push(
                           CupertinoSheetRoute(
-                            builder: (context) => ModalFit(),
+                            builder: (context) => Scaffold(
+                              body: Builder(
+                                builder: (context) => SingleChildScrollView(
+                                  primary: true,
+                                  child: Container(),
+                                ),
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -202,7 +280,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           onTap: () {
                             Navigator.of(context).push(
                               CupertinoSheetRoute(
-                                isDismissible: false,
                                 builder: (context) => Stack(
                                   children: <Widget>[
                                     ModalWithScroll(),
