@@ -1,335 +1,213 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet_example/examples/cupertino_share/cupertino_share.dart';
-import 'package:modal_bottom_sheet_example/modals/avatar_sheet.dart';
-import 'package:modal_bottom_sheet_example/snap_sheet_example.dart';
+import 'package:modal_bottom_sheet_example/routes_example.dart';
+import 'package:modal_bottom_sheet_example/slide_page.dart';
+import 'collapse_slide_bug.dart';
+import 'keynote.dart';
 
-import 'draggable_sheet.dart';
-import 'examples/complex_snap_sheet.dart';
-import 'examples/navigator_v2/navigator_v2.dart';
-import 'examples/snap_sheet.dart';
-import 'modals/bar_sheet.dart';
-import 'modals/floating_sheet.dart';
-import 'examples/modal_complex_all.dart';
-import 'examples/modal_fit.dart';
-import 'examples/modal_inside_modal.dart';
-import 'examples/modal_will_scope.dart';
-import 'examples/modal_with_navigator.dart';
-import 'examples/modal_with_nested_scroll.dart';
-import 'examples/modal_with_scroll.dart';
-import 'examples/modal_with_page_view.dart';
-import 'modals/material_sheet.dart';
+void main() => runApp(App());
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(platform: TargetPlatform.iOS),
-      title: 'BottomSheet Modals',
-      //home: ListViewSnapSheetExample(),
-      //  home: DraggablePage(),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      debugShowCheckedModeBanner: false,
-    );
+        theme: ThemeData(primarySwatch: Colors.grey),
+        title: 'Keynote',
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Transitions'),
+          ),
+          body: GridView.custom(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 600, childAspectRatio: 3),
+            childrenDelegate: SliverChildListDelegate.fixed(
+              [
+                Tile(
+                    title: 'Material Transition',
+                    builder: (context) => MaterialTransition()),
+                Tile(
+                    title: 'Transition Defined By \nUpcoming Route',
+                    builder: (context) => TransitionDefinedByUpcomingRoute()),
+                Tile(
+                    title: 'CurrentRouteDefinesUpcomingRouteTransition',
+                    builder: (context) =>
+                        CurrentRouteDefinesUpcomingRouteTransition()),
+                Tile(
+                    title: 'UpcomingRouteDefinesCurrentRouteTransition',
+                    builder: (context) =>
+                        UpcomingRouteDefinesCurrentRouteTransition()),
+                Tile(
+                    title: 'CollapseSlideBug',
+                    builder: (context) => CollapseSlideBug())
+              ],
+            ),
+          ),
+        ));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
+class Tile extends StatelessWidget {
   final String title;
+  final WidgetBuilder builder;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+  const Tile({Key? key, required this.title, required this.builder})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Scaffold(
-        body: CupertinoPageScaffold(
-          backgroundColor: Colors.white,
-          child: SizedBox.expand(
-            child: SingleChildScrollView(
-              primary: true,
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Cupertino Photo Share Example'),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CupertinoSharePage(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Book App - Navigator 2.0'),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => BooksApp(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('SnapSheet without route'),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => SnapSheetPageExample(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Advanced SnapSheet without route '),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => AdvancedSnapSheetPageExample(),
-                        ),
-                      ),
-                    ),
-                    SectionTitle('STYLES'),
-                    ListTile(
-                      title: Text('Material fit'),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialSheetRoute(
-                          expand: false,
-                          builder: (context) => ModalFit(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Bar Modal'),
-                      onTap: () => Navigator.of(context).push(
-                        BarSheetRoute(
-                          expand: false,
-                          builder: (context) => ModalInsideModal(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Avatar Modal'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          AvatarSheetRoute(
-                            builder: (context) => ModalInsideModal(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Float Modal'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          FloatingSheetRoute(
-                            builder: (context) => ModalFit(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Cupertino Modal'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoSheetRoute(
-                            builder: (context) => ModalFit(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Cupertino Sheet with stops'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoSheetRoute(
-                            initialStop: 0.5,
-                            stops: [0, 0.5, 1],
-                            builder: (context) => ModalFit(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Cupertino Scrollable Sheet with stops'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoSheetRoute(
-                            initialStop: 0.5,
-                            stops: [0, 0.5, 1],
-                            builder: (context) => ModalInsideModal(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Material Sheet with stops'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialSheetRoute(
-                            expand: true,
-                            initialStop: 0.5,
-                            stops: [0, 0.5, 1],
-                            builder: (context) => ModalFit(),
-                          ),
-                        );
-                      },
-                    ),
-                    SectionTitle('COMPLEX CASES'),
-                    ListTile(
-                      title: Text('Cupertino Small Modal forced to expand'),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoSheetRoute(
-                            builder: (context) => Scaffold(
-                              body: Builder(
-                                builder: (context) => SingleChildScrollView(
-                                  primary: true,
-                                  child: Container(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Reverse list'),
-                      onTap: () => Navigator.of(context).push(
-                        BarSheetRoute(
-                          expand: false,
-                          builder: (context) => ModalInsideModal(reverse: true),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Cupertino Modal inside modal'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => ModalInsideModal(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Cupertino Modal with inside navigation'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => ModalWithNavigator(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title:
-                          Text('Cupertino Navigator + Scroll + WillPopScope'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => ComplexModal(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Modal with WillPopScope'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => ModalWillScope(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Modal with Nested Scroll'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => NestedScrollModal(),
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text('Modal with PageView'),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoSheetRoute(
-                          builder: (context) => ModalWithPageView(),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 60)
-                  ],
-                ),
-              ),
-            ),
-          ),
-          navigationBar: CupertinoNavigationBar(
-            transitionBetweenRoutes: false,
-            middle: Text('iOS13 Modal Presentation'),
-            trailing: GestureDetector(
-              child: Icon(Icons.arrow_forward),
-              onTap: () =>
-                  Navigator.of(context).push(MaterialPageRoute(builder: (c) {
-                return Scaffold(
-                  body: Builder(
-                    builder: (context) => CupertinoPageScaffold(
-                      backgroundColor: Colors.white,
-                      navigationBar: CupertinoNavigationBar(
-                        transitionBetweenRoutes: false,
-                        middle: Text('Normal Navigation Presentation'),
-                        trailing: GestureDetector(
-                          child: Icon(Icons.arrow_upward),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              CupertinoSheetRoute(
-                                builder: (context) => Stack(
-                                  children: <Widget>[
-                                    ModalWithScroll(),
-                                    Positioned(
-                                      height: 40,
-                                      left: 40,
-                                      right: 40,
-                                      bottom: 20,
-                                      child: MaterialButton(
-                                        onPressed: () => Navigator.of(context)
-                                            .popUntil((route) =>
-                                                route.settings.name == '/'),
-                                        child: Text('Pop back home'),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      child: Center(child: Container()),
-                    ),
-                  ),
-                );
-              })),
-            ),
-          ),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context)!.push(MaterialPageRoute(builder: builder));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Text('$title ▶️'),
         ),
       ),
     );
   }
 }
 
-class SectionTitle extends StatelessWidget {
-  final String title;
-
-  const SectionTitle(
-    this.title, {
-    Key key,
-  }) : super(key: key);
+/// Simple transition with MaterialPageRoute
+class MaterialTransition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.caption,
+    return Keynote(pages: [
+      MaterialPage(
+        key: ValueKey('Slide 1'),
+        child: Slide(
+          child: Text('Slide 1'),
+        ),
       ),
-    );
+      MaterialPage(
+        key: ValueKey('Slide 2'),
+        child: Slide(
+          backgroundColor: Colors.black,
+          child: Text(
+            'Slide 2',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    ]);
+  }
+}
+
+class TransitionDefinedByUpcomingRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Keynote(pages: [
+      MaterialPage(
+        child: Slide(
+          backgroundColor: Colors.green[200],
+          child: Text('Slide 1'),
+        ),
+      ),
+      PageWithTransitionEffect(
+        effect: TranslateTransitionEffect(
+          duration: Duration(milliseconds: 300),
+          direction: TranslateTransitionDirection.bottomToTop,
+        ),
+        child: Slide(
+          backgroundColor: Colors.blue[200],
+          child: Text('Slide 2'),
+        ),
+      ),
+    ]);
+  }
+}
+
+class CurrentRouteDefinesUpcomingRouteTransition extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Keynote(pages: [
+      MaterialPage(
+        key: ValueKey('Slide 12'),
+        child: Slide(
+          child: Text('Slide 1'),
+        ),
+      ),
+      SlidePage(
+        effect: FadeInTransitionEffect(duration: Duration(seconds: 1)),
+        key: ValueKey('Slide 1'),
+        child: Slide(
+          child: Text('Slide 1'),
+        ),
+      ),
+      SlidePage(
+        effect: TranslateTransitionEffect(
+          duration: Duration(seconds: 1),
+          direction: TranslateTransitionDirection.bottomToTop,
+        ),
+        key: ValueKey('Slide 2'),
+        child: Slide(
+          backgroundColor: Colors.redAccent[200],
+          child: Text('Slide 2'),
+        ),
+      ),
+      SlidePage(
+        effect: TranslateTransitionEffect(
+          duration: Duration(seconds: 2),
+          direction: TranslateTransitionDirection.rightToLeft,
+        ),
+        key: ValueKey('Slide 3'),
+        child: Slide(
+          backgroundColor: Colors.blueAccent[200],
+          child: Text('Slide 3'),
+        ),
+      ),
+      MaterialPage(
+        key: ValueKey('Slide 4'),
+        child: Slide(
+          backgroundColor: Colors.green[200],
+          child: Text('Slide 4'),
+        ),
+      ),
+    ]);
+  }
+}
+
+class UpcomingRouteDefinesCurrentRouteTransition extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Keynote(pages: [
+      MaterialPage(
+        key: ValueKey('Slide 1'),
+        child: Slide(
+          child: Text('Slide 1'),
+        ),
+      ),
+      PageWithTransitionEffect(
+        effect: FadeInTransitionEffect(duration: Duration(seconds: 1)),
+        key: ValueKey('Slide 2'),
+        child: Slide(
+          backgroundColor: Colors.redAccent[200],
+          child: Text('Slide 2'),
+        ),
+      ),
+      PageWithTransitionEffect(
+        effect: TranslateTransitionEffect(
+          duration: Duration(seconds: 1),
+          direction: TranslateTransitionDirection.bottomToTop,
+        ),
+        key: ValueKey('Slide 3'),
+        child: Slide(
+          backgroundColor: Colors.blueAccent[200],
+          child: Text('Slide 3'),
+        ),
+      ),
+      PageWithTransitionEffect(
+        key: ValueKey('Slide 4'),
+        effect: TranslateTransitionEffect(
+          duration: Duration(seconds: 2),
+          direction: TranslateTransitionDirection.rightToLeft,
+        ),
+        child: Slide(
+          backgroundColor: Colors.green[200],
+          child: Text('Slide 4'),
+        ),
+      ),
+    ]);
   }
 }
